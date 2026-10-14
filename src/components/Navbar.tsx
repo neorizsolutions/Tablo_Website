@@ -28,26 +28,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
   ];
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-xs py-3.5' 
+    <header
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isScrolled
+          ? 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-xs py-3.5'
           : 'bg-[#FAFCFB]/90 backdrop-blur-xs py-5'
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          
+
           {/* Brand Logo & Sub-tag */}
           <a href="#" className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#059669] rounded-lg">
-            <img 
-              src="/logo.png" 
-              alt="TABLO" 
+            <img
+              src="/logo.png"
+              alt="TABLO"
               className="h-9 w-auto object-contain transition-transform group-hover:scale-105"
             />
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <span className="text-xs uppercase font-extrabold tracking-widest text-[#059669]">Restaurant Solutions</span>
-            </div>
+            </div> */}
           </a>
 
           {/* Desktop Navigation Links */}
