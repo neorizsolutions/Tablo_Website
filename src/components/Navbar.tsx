@@ -44,9 +44,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               alt="TABLO"
               className="h-9 w-auto object-contain transition-transform group-hover:scale-105"
             />
-            {/* <div className="flex flex-col">
-              <span className="text-xs uppercase font-extrabold tracking-widest text-[#059669]">Restaurant Solutions</span>
-            </div> */}
           </a>
 
           {/* Desktop Navigation Links */}
