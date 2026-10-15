@@ -10,20 +10,17 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
     <footer className="bg-white border-t border-gray-200 text-gray-600 text-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
-          
+
           {/* Brand Column */}
           <div className="md:col-span-5 space-y-4">
             <a href="#" className="flex items-center gap-3">
-              <img 
-                src="/logo.png" 
-                alt="TABLO" 
+              <img
+                src="/logo.png"
+                alt="TABLO"
                 className="h-9 w-auto object-contain"
               />
-              <span className="text-xs uppercase font-extrabold tracking-widest text-[#059669]">
-                Restaurant Solutions
-              </span>
             </a>
-            
+
             <p className="text-gray-500 text-xs sm:text-sm leading-relaxed max-w-sm">
               TABLO provides tailored digital ordering and billing platforms for modern restaurants, cafés, and quick-service operations. Choose between self-service counter pickup or table-aware ordering.
             </p>
@@ -82,7 +79,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
                 </a>
               </li>
               <li>
-                <button 
+                <button
                   onClick={() => onOpenEnquiry('both')}
                   className="hover:text-[#0A3C2F] transition-colors text-left font-semibold text-[#059669] cursor-pointer"
                 >
