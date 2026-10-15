@@ -15,6 +15,7 @@ import {
   ShoppingBag, 
   CheckCircle2, 
   ChevronRight,
+  ChevronLeft,
   ShieldCheck,
   Maximize2,
   Utensils,
@@ -29,6 +30,18 @@ import {
 export const SelfOrderingWorkflow: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'customer' | 'management'>('customer');
   const [activeModalCard, setActiveModalCard] = useState<WorkflowCard | null>(null);
+
+  const scrollToStep = (stepNumber: number) => {
+    const el = document.getElementById(`so-step-${stepNumber}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Add a subtle highlight pulse
+      el.classList.add('ring-2', 'ring-emerald-500');
+      setTimeout(() => {
+        el.classList.remove('ring-2', 'ring-emerald-500');
+      }, 1200);
+    }
+  };
 
   return (
     <section id="self-ordering" className="py-24 bg-white border-t border-gray-100 scroll-mt-20">
@@ -106,8 +119,9 @@ export const SelfOrderingWorkflow: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {SELF_ORDERING_CUSTOMER_WORKFLOW.map((card, idx) => (
                 <div
+                  id={`so-step-${card.step}`}
                   key={card.step}
-                  className={`bg-[#FAFCFB] rounded-3xl border shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group ${
+                  className={`bg-[#FAFCFB] rounded-3xl border shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group scroll-mt-28 ${
                     card.step === 7
                       ? 'border-emerald-500/60 ring-2 ring-emerald-500/20 bg-emerald-50/20'
                       : 'border-gray-200/90 hover:border-emerald-500/40'
@@ -174,13 +188,43 @@ export const SelfOrderingWorkflow: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold text-emerald-800">
-                      <span className="text-gray-400">Step {card.step} of 8</span>
-                      {idx < SELF_ORDERING_CUSTOMER_WORKFLOW.length - 1 && (
-                        <span className="flex items-center gap-1 text-emerald-700">
+                    <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold">
+                      {idx > 0 ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            scrollToStep(card.step - 1);
+                          }}
+                          className="flex items-center gap-1 text-gray-500 hover:text-emerald-700 transition-colors cursor-pointer py-1 px-1.5 -ml-1.5 rounded-md hover:bg-emerald-50"
+                          title={`Go to Step ${card.step - 1}`}
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                          <span>Prev</span>
+                        </button>
+                      ) : (
+                        <span className="text-gray-400">Step {card.step} of 8</span>
+                      )}
+
+                      {idx > 0 && (
+                        <span className="text-gray-400 font-normal">Step {card.step}/8</span>
+                      )}
+
+                      {idx < SELF_ORDERING_CUSTOMER_WORKFLOW.length - 1 ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            scrollToStep(card.step + 1);
+                          }}
+                          className="flex items-center gap-1 text-emerald-700 hover:text-emerald-900 transition-colors cursor-pointer py-1 px-1.5 -mr-1.5 rounded-md hover:bg-emerald-50 ml-auto"
+                          title={`Go to Step ${card.step + 1}`}
+                        >
                           <span>Next</span>
                           <ChevronRight className="w-3.5 h-3.5" />
-                        </span>
+                        </button>
+                      ) : (
+                        <span className="text-emerald-600 font-medium">Final Step</span>
                       )}
                     </div>
                   </div>
@@ -322,11 +366,42 @@ export const SelfOrderingWorkflow: React.FC = () => {
                 />
               </div>
 
-              <div className="p-5 bg-white border-t border-gray-200 space-y-2">
+              <div className="p-5 bg-white border-t border-gray-200 space-y-3">
                 <p className="text-sm text-gray-700">{activeModalCard.description}</p>
-                <div className="flex items-center gap-2 text-xs text-emerald-800 font-semibold pt-1">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>TABLO Self-Ordering customer step preview.</span>
+                <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                  <div className="flex items-center gap-2 text-xs text-emerald-800 font-semibold">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>TABLO Self-Ordering customer step preview.</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {activeModalCard.step > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const prev = SELF_ORDERING_CUSTOMER_WORKFLOW.find(c => c.step === activeModalCard.step - 1);
+                          if (prev) setActiveModalCard(prev);
+                        }}
+                        className="flex items-center gap-1 text-xs font-semibold text-gray-600 hover:text-emerald-800 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer"
+                      >
+                        <ChevronLeft className="w-3.5 h-3.5" />
+                        <span>Previous Step</span>
+                      </button>
+                    )}
+                    {activeModalCard.step < SELF_ORDERING_CUSTOMER_WORKFLOW.length && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const next = SELF_ORDERING_CUSTOMER_WORKFLOW.find(c => c.step === activeModalCard.step + 1);
+                          if (next) setActiveModalCard(next);
+                        }}
+                        className="flex items-center gap-1 text-xs font-semibold text-white bg-[#0A3C2F] hover:bg-emerald-900 px-3 py-1.5 rounded-lg cursor-pointer"
+                      >
+                        <span>Next Step</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
